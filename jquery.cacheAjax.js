@@ -46,16 +46,18 @@
       default : {
           type:     'GET',
           dataType: 'script',
-          success: function(e) {
-                     $.cacheAjaxData.add(cache_key,e);
-                     eval(e);
-                   }
         }
     },
 
     cacheAjax       : function(para) {
 
       opt = $.extend({}, $.cacheAjaxData.default , para);
+
+      opt.success = function(e) {
+        $.cacheAjaxData.add(cache_key,e);
+        eval(e) if opt.dataType == 'script';
+        para.success.call(this,e) if para.success
+      }
 
       if(opt.type == 'GET' && opt.dataType == 'script') {
         // customize cache key
