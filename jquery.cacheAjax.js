@@ -50,7 +50,6 @@
     },
 
     cacheAjax       : function(para) {
-
       opt = $.extend({}, $.cacheAjaxData.default , para);
 
       opt.success = function(e) {
@@ -59,7 +58,7 @@
         para.success.call(this,e) if para.success
       }
 
-      if(opt.type == 'GET' && opt.dataType == 'script') {
+      if(opt.type == 'GET') {
         // customize cache key
         var cache_key = opt.key || (opt.url + opt.data); //FIXME cache key -> real url
 
@@ -69,10 +68,10 @@
         if(result){
           eval(result);
         }else{
-          $.ajax(opt)
+          $.ajax($.extend({},opt ,{dataType: 'text'}))
         };
       }else{
-        $.ajax(opt);
+        $.ajax(para);
       };
     },
 
