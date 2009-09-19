@@ -16,7 +16,9 @@
  *   expireAjaxCache  ->
  *                       $.expireAjaxCache(/regexp/)
  *                       $.expireAjaxCache('string-key')
- *                       $.expireAjaxCache() // default
+ *                       $.expireAjaxCache()  // default document.location.hash
+ *                           $.setAjaxCacheDefaultKey = 'string' // set default key
+ *                           $.setAjaxCacheDefaultKey =  function() {}
 */
 
 (function($) {
@@ -24,31 +26,35 @@
     // cacheAjaxData(get,add,del,data)
     cacheAjaxData   : {
       get  : function(key) {
-        r = $.cacheAjaxData.data[key]; // result
+        r = $.cacheAjaxData.data[key.toString()]; // result
         // unexist or expired
         return (!r || (r[1] && (new Date()).getTime() > r[1])) ? false : r[0];
       },
 
       add  : function(key,value,timeout) { // default timeout
         timeout = timeout ? ((new Date()).getTime() + timeout) : ($.cacheAjaxData.Timeout || false);
-        $.cacheAjaxData.data[key] = [value,timeout];
+        $.cacheAjaxData.data[key.toString()] = [value,timeout];
       },
 
       del  : function(key) {
         if(key){
-          // regexp
           if(key instanceof RegExp){
+            // regexp
             for (var i in $.cacheAjaxData.data) {
               if(key.test(i)){ $.cacheAjaxData.data[i] = false; };
             };
+          }else{
+            // string
+            $.cacheAjaxData.data[key.toString()] = false;
           };
-
-          // string
-          $.cacheAjaxData.data[key] = false;
         }else{
-          // default
-          //FIXME make configurable?
-          $.cacheAjaxData.data[document.location.hash] = false;
+          // default key
+          if($.cacheAjaxData.defaultKey instanceof Function){
+            key = $.cacheAjaxData.defaultKey.call(this).toString()
+          }else{
+            key = $.cacheAjaxData.defaultKey.toString()
+          }
+          $.cacheAjaxData.data[key] = false;
         }
       },
       data : {},
@@ -56,7 +62,8 @@
           type:     'GET',
           dataType: 'script',
         },
-      Timeout: false
+      Timeout: false,
+      defaultKey: document.location.hash
     },
 
     cacheAjax       : function(para) {
@@ -66,7 +73,7 @@
         $.cacheAjaxData.add(cache_key,e,opt.timeout);
         eval(e) if opt.dataType == 'script';
         para.success.call(this,e) if para.success
-      }
+      };
 
       if(opt.type == 'GET') {
         // customize cache key
@@ -91,6 +98,10 @@
 
     setAjaxCacheTimeout: function(value) {
       $.cacheAjaxData.Timeout = value;
+    },
+
+    setAjaxCacheDefaultKey: function(value) {
+      $.cacheAjaxData.defaultKey = value;
     }
   });
 })(jQuery);
