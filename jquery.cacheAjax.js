@@ -71,8 +71,8 @@
 
       opt.success = function(e) {
         $.cacheAjaxData.add(cache_key,e,opt.timeout);
-        eval(e) if opt.dataType == 'script';
-        para.success.call(this,e) if para.success
+        if(opt.dataType == 'script'){ eval(e) };
+        if(para.success){ para.success.call(this,e) };
       };
 
       if(opt.type == 'GET') {
