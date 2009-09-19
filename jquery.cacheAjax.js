@@ -8,15 +8,24 @@
  *                        force new ajax request
  *                        pass cache key
  *                        work with DataType 'xml','html','script','json'
- *                        set Lifetime
+ *                        set Lifetime/default lifetime
  *   expireAjaxCache  -> string,/regexp/,default(current_url)
 */
 
 (function($) {
   $.fn.extend({
-    cacheAjax       : function() {
+    cacheAjaxData   : {
+      get  : function(key) {
       },
+      add  : function(key,value,lifetime) {
+      },
+      del  : function(key) {
+      },
+      data : {}
+    },
+    cacheAjax       : function() {
+    },
     expireAjaxCache : function() {
-      }
+    }
   });
 })(jQuery);
