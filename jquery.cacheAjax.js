@@ -14,17 +14,27 @@
 
 (function($) {
   $.fn.extend({
+    // cacheAjaxData(get,add,del,data)
     cacheAjaxData   : {
       get  : function(key) {
+        r = $.cacheAjaxData.data[key]; // result
+        // unexist or expired
+        return (!r || (r[1] && (new Date()).getTime() > r[1])) ? false : r[0];
       },
-      add  : function(key,value,lifetime) {
+      add  : function(key,value,lifetime) { // default lifetime
+        lifetime = lifetime ? ((new Date()).getTime() + lifetime) : false
+        $.cacheAjaxData.data[key] = [value,lifetime]
       },
       del  : function(key) {
+        r = $.cacheAjaxData.data[key]; // result
+        if(r){ $.cacheAjaxData.data[key] = false };
       },
       data : {}
     },
+
     cacheAjax       : function() {
     },
+
     expireAjaxCache : function() {
     }
   });
