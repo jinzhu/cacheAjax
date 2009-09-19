@@ -38,38 +38,39 @@
           $.cacheAjaxData.data[key] = false;
         }else{
           // default
-          //FIXME make configurable
+          //FIXME make configurable?
           $.cacheAjaxData.data[document.location.hash] = false;
         }
       },
-      data : {}
+      data : {},
+      default : {
+          type:     'GET',
+          dataType: 'script',
+          success: function(e) {
+                     $.cacheAjaxData.add(cache_key,e);
+                     eval(e);
+                   }
+        }
     },
 
     cacheAjax       : function(para) {
-    //FIXME merge opt
-      if(para.type == 'GET' && (!para.dataType || para.dataType == 'script')) {
-        //FIXME make cache key looks like real url
-        var cache_key = para.url + para.data;
-        result = $.cacheAjaxData.get(cache_key);
 
-        //FIXME force send ajax request
+      opt = $.extend({}, $.cacheAjaxData.default , para);
+
+      if(opt.type == 'GET' && opt.dataType == 'script') {
+        // customize cache key
+        var cache_key = opt.key || (opt.url + opt.data); //FIXME cache key -> real url
+
+        // force send ajax request
+        result = opt.force ? false : $.cacheAjaxData.get(cache_key);
+
         if(result){
           eval(result);
         }else{
-          $.ajax({
-            url:  para.url,
-            type: para.type,
-            data: para.data,
-            dataType: para.dataType,
-            //FIXME merge function
-            success: function(e) {
-                       $.cacheAjaxData.add(cache_key,e);
-                       eval(e);
-                     }
-             });
+          $.ajax(opt)
         };
       }else{
-        $.ajax(para);
+        $.ajax(opt);
       };
     },
 
