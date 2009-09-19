@@ -27,15 +27,41 @@
       },
       del  : function(key) {
         r = $.cacheAjaxData.data[key]; // result
-        if(r){ $.cacheAjaxData.data[key] = false };
+        if(r){ $.cacheAjaxData.data[key] = false }; //FIXME current_url,regexp
       },
       data : {}
     },
 
-    cacheAjax       : function() {
+    cacheAjax       : function(para) {
+    //FIXME merge opt
+      if(para.type == 'GET' && (!para.dataType || para.dataType == 'script')) {
+        //FIXME make cache key looks like real url
+        var cache_key = para.url + para.data;
+        result = $.cacheAjaxData.get(cache_key);
+
+        //FIXME force send ajax request
+        if(result){
+          eval(result);
+        }else{
+          $.ajax({
+            url:  para.url,
+            type: para.type,
+            data: para.data,
+            dataType: para.dataType,
+            //FIXME merge function
+            success: function(e) {
+                       $.cacheAjaxData.add(cache_key,e);
+                       eval(e);
+                     }
+             });
+        };
+      }else{
+        $.ajax(para);
+      };
     },
 
-    expireAjaxCache : function() {
+    expireAjaxCache : function(key) {
+      $.cacheAjaxData.del(key);
     }
   });
 })(jQuery);
