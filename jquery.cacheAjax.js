@@ -1,15 +1,22 @@
 /**
  * Copyright (c) 2009 Zhang Jinzhu ( wosmvp@gmail.com )
  * Dual licensed under the MIT and GPL
- * TODO: 
+ *
  *   cacheAjax        -> 
- *                        cache GET request
- *                        url + data as cache key
- *                        force new ajax request
- *                        pass cache key
- *                        work with DataType 'xml','html','script','json'
- *                        set Lifetime/default lifetime
- *   expireAjaxCache  -> string,/regexp/,default(current_url)
+ *                       force new ajax request
+ *                           $.cacheAjax({ force : true }) // force new ajax request 
+ *                       cache key
+ *                           $.cacheAjax({ key : customized_key }) // customize 
+ *                           url + data                            // default key
+ *                       setTimeout
+ *                           $.cacheAjax({ timeout : 2000 }) // 2 seconds
+ *                           $.setAjaxCacheTimeout(2000)     // 2 seconds, global default
+ *                           $.setAjaxCacheTimeout(false)    // never expire
+ *
+ *   expireAjaxCache  ->
+ *                       $.expireAjaxCache(/regexp/)
+ *                       $.expireAjaxCache('string-key')
+ *                       $.expireAjaxCache() // default
 */
 
 (function($) {
@@ -21,10 +28,12 @@
         // unexist or expired
         return (!r || (r[1] && (new Date()).getTime() > r[1])) ? false : r[0];
       },
-      add  : function(key,value,lifetime) { // default lifetime
-        lifetime = lifetime ? ((new Date()).getTime() + lifetime) : false
-        $.cacheAjaxData.data[key] = [value,lifetime]
+
+      add  : function(key,value,timeout) { // default timeout
+        timeout = timeout ? ((new Date()).getTime() + timeout) : ($.cacheAjaxData.Timeout || false);
+        $.cacheAjaxData.data[key] = [value,timeout];
       },
+
       del  : function(key) {
         if(key){
           // regexp
@@ -46,14 +55,15 @@
       default : {
           type:     'GET',
           dataType: 'script',
-        }
+        },
+      Timeout: false
     },
 
     cacheAjax       : function(para) {
       opt = $.extend({}, $.cacheAjaxData.default , para);
 
       opt.success = function(e) {
-        $.cacheAjaxData.add(cache_key,e);
+        $.cacheAjaxData.add(cache_key,e,opt.timeout);
         eval(e) if opt.dataType == 'script';
         para.success.call(this,e) if para.success
       }
@@ -77,6 +87,10 @@
 
     expireAjaxCache : function(key) {
       $.cacheAjaxData.del(key);
+    },
+
+    setAjaxCacheTimeout: function(value) {
+      $.cacheAjaxData.Timeout = value;
     }
   });
 })(jQuery);
