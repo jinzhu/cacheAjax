@@ -26,8 +26,21 @@
         $.cacheAjaxData.data[key] = [value,lifetime]
       },
       del  : function(key) {
-        r = $.cacheAjaxData.data[key]; // result
-        if(r){ $.cacheAjaxData.data[key] = false }; //FIXME current_url,regexp
+        if(key){
+          // regexp
+          if(key instanceof RegExp){
+            for (var i in $.cacheAjaxData.data) {
+              if(key.test(i)){ $.cacheAjaxData.data[i] = false; };
+            };
+          };
+
+          // string
+          $.cacheAjaxData.data[key] = false;
+        }else{
+          // default
+          //FIXME make configurable
+          $.cacheAjaxData.data[document.location.hash] = false;
+        }
       },
       data : {}
     },
