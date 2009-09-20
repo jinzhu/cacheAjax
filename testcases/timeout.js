@@ -1,4 +1,4 @@
-test("jQuery.cacheAjax() - timeout", function() {
+test("jQuery.cacheAjax() - setTimeout", function() {
   expect(8); // 2 beforeSend,2 success,2 complete,2 ajax call back
   stop();
 
@@ -11,7 +11,7 @@ test("jQuery.cacheAjax() - timeout", function() {
   window.setTimeout("successCacheAjax({ url: '/ajax', key: 'timeout', timeout : 2000, });start();",110);
 });
 
-test("jQuery.cacheAjax() - default timeout", function() {
+test("jQuery.setAjaxCacheTimeout() - global default timeout", function() {
   expect(8); // 2 beforeSend,2 success,2 complete,2 ajax call back
   stop();
 

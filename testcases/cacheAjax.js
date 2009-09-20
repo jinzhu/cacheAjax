@@ -17,7 +17,7 @@ successCacheAjax = function(opt) {
   jQuery.cacheAjax(opt);
 };
 
-test("jQuery.cacheAjax() - success cache/invoke", function() {
+test("jQuery.cacheAjax() - successful cache/invoke", function() {
   expect(6); //beforeSend,2 success,complete,2 ajax call back
   stop();
 
@@ -27,7 +27,7 @@ test("jQuery.cacheAjax() - success cache/invoke", function() {
   start();
 });
 
-test("jQuery.cacheAjax() - pass function to success", function() {
+test("jQuery.cacheAjax() - pass function", function() {
   expect(7); //beforeSend,3 success,complete,2 ajax call back
   stop();
 
@@ -51,7 +51,7 @@ test("jQuery.cacheAjax() - pass function to success", function() {
   start();
 });
 
-test("jQuery.cacheAjax() - force to request", function() {
+test("jQuery.cacheAjax() - force new request", function() {
   expect(8); // 2 beforeSend,2 success,2 complete,2 ajax call back
   stop();
 

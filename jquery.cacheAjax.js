@@ -82,7 +82,8 @@
           if(opt.dataType == 'script'){ eval(result) };
           if(para.success){ para.success.call(this,result) };
         }else{
-          $.ajax($.extend({},opt ,{dataType: 'text'}))
+          // if dataType is 'script',reset to 'text'
+          $.ajax($.extend({},opt,(opt.dataType == 'script') ? {dataType: 'text'} : {}));
         };
       }else{
         $.ajax(para);

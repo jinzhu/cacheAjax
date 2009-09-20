@@ -1,4 +1,4 @@
-test("jQuery.cacheAjax() - regexp expire cache", function() {
+test("jQuery.expireAjaxCache() - expire cache /regexp/ ", function() {
   expect(16); // 4 beforeSend,4 success,4 complete,4 ajax call back
   stop();
 
@@ -27,7 +27,7 @@ test("jQuery.cacheAjax() - regexp expire cache", function() {
   start();
 });
 
-test("jQuery.cacheAjax() - string expire cache", function() {
+test("jQuery.expireAjaxCache() - expire cache string", function() {
   expect(8); // 2 beforeSend,2 success,2 complete,2 ajax call back
   stop();
 
