@@ -10,6 +10,5 @@ end
 
 get '/ajax' do
   sleep(params[:wait].to_i) if params[:wait]
-  # erb :ajax
   'ok(true, "ajax call back")'
 end
