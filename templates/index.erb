@@ -7,11 +7,11 @@
     <script src="/jquery.cacheAjax.js"></script>
     <link rel="stylesheet" href="/assets/testsuite.css" type="text/css" media="screen" />
 
-    <% Dir.glob('testcase/*').map do |x| %>
+    <% Dir.glob('testcases/*').map do |x| %>
       <script type="text/javascript" charset="utf-8">
         module("<%= File.basename(x) %>");
       </script>
-      <script src="/testcase/<%= File.basename(x) %>"></script>
+      <script src="/<%= x %>"></script>
     <% end %>
   </head>
   <body>
