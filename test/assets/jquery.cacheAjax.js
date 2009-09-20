@@ -22,7 +22,7 @@
 */
 
 (function($) {
-  $.fn.extend({
+  cacheAjax = {
     // cacheAjaxData(get,add,del,data)
     cacheAjaxData   : {
       get  : function(key) {
@@ -103,5 +103,8 @@
     setAjaxCacheDefaultKey: function(value) {
       $.cacheAjaxData.defaultKey = value;
     }
-  });
+  };
+
+  $.extend(cacheAjax);
+  $.fn.extend(cacheAjax);
 })(jQuery);

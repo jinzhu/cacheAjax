@@ -1,9 +1,13 @@
 require 'rubygems'
 require 'sinatra'
 
-set :public, File.dirname(__FILE__) + '/assets'
+set :public, File.dirname(__FILE__)
 set :views,  File.dirname(__FILE__) + '/templates'
 
-get '/index' do
+get '/' do
   erb :index
+end
+
+get '/ajax' do
+  'ok'
 end

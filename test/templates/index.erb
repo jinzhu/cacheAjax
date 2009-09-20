@@ -6,21 +6,17 @@
     <!-- <link rel="stylesheet" href="http://jqueryjs.googlecode.com/svn/trunk/qunit/testsuite.css" type="text/css" media="screen" /> -->
     <!-- <script type="text/javascript" src="http://jqueryjs.googlecode.com/svn/trunk/qunit/testrunner.js"></script> -->
 
-    <script src="/jquery-1.3.2.js"></script>
-    <script src="/testrunner.js"></script>
-    <script src="/jquery.cacheAjax.js"></script>
-    <link rel="stylesheet" href="/testsuite.css" type="text/css" media="screen" />
+    <script src="/assets/jquery-1.3.2.js"></script>
+    <script src="/assets/testrunner.js"></script>
+    <script src="/assets/jquery.cacheAjax.js"></script>
+    <link rel="stylesheet" href="/assets/testsuite.css" type="text/css" media="screen" />
 
-    <script>
-      $(document).ready(function(){
-        test("a basic test example", function() {
-          ok( true, "this test is fine" );
-          var value = "hello";
-          equals( "hello", value, "We expect value to be hello" );
-        });
-      });
-    </script>
-
+    <% Dir.glob('testcase/*').map do |x| %>
+      <script type="text/javascript" charset="utf-8">
+        module("<%= File.basename(x) %>");
+      </script>
+      <script src="/testcase/<%= File.basename(x) %>"></script>
+    <% end %>
   </head>
   <body>
 
