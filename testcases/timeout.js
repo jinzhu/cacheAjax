@@ -8,7 +8,7 @@ test("jQuery.cacheAjax() - setTimeout", function() {
       timeout : 100,
     });
 
-  window.setTimeout("successCacheAjax({ url: '/ajax', key: 'timeout', timeout : 2000, });start();",110);
+  window.setTimeout("successCacheAjax({ url: '/ajax', key: 'timeout', timeout : 2000, });start();",150);
 });
 
 test("jQuery.setAjaxCacheTimeout() - global default timeout", function() {
