@@ -58,16 +58,12 @@
         }
       },
       data : {},
-      default : {
-          type:     'GET',
-          dataType: 'script',
-        },
       Timeout: false,
       defaultKey: document.location.hash
     },
 
     cacheAjax       : function(para) {
-      opt = $.extend({}, $.cacheAjaxData.default , para);
+      opt = $.extend( {type: 'GET',dataType : 'script'} , para);
 
       opt.success = function(e) {
         $.cacheAjaxData.add(cache_key,e,opt.timeout);
@@ -83,7 +79,7 @@
         result = opt.force ? false : $.cacheAjaxData.get(cache_key);
 
         if(result){
-          eval(result);
+          if(opt.dataType == 'script'){ eval(result) };
           if(para.success){ para.success.call(this,result) };
         }else{
           $.ajax($.extend({},opt ,{dataType: 'text'}))
