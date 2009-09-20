@@ -1,0 +1,59 @@
+= jQuery.cacheAjax 
+
+== How to use?
+
+=== $.cacheAjax
+    $.cacheAjax() is a drop-in replacement for $.ajax().
+
+    but what make it special ? the following:
+      cache your ajax requests:
+        oops,of course!
+      force a new ajax request:
+        $.cacheAjax({ force : true })
+      customize cache key ( default use 'url + data' )
+        $.cacheAjax({ key : customized_key })
+      set timeout:
+        set timeout for each request:
+          $.cacheAjax({ timeout : 2000 }) // 2 seconds
+        set global timeout:
+          $.setAjaxCacheTimeout(2000)     // 2 seconds
+          $.setAjaxCacheTimeout(false)    // never expire
+
+=== $.expireAjaxCache
+  $.expireAjaxCache(/regexp/)
+    expire all key match /regexp/
+
+  $.expireAjaxCache('string-key')
+    expire 'string-key'
+
+  $.expireAjaxCache()
+    default expire `document.location.hash`,use the following to reset the default:
+      $.setAjaxCacheDefaultKey('string');
+        // use 'string' as default
+      $.setAjaxCacheDefaultKey(function(){});
+        // use the function's return value as default
+
+=== A small sample:
+  $.cacheAjax({
+    url : '/pictures'
+    dataType: 'script'
+    success: function(e){
+      console.log(e);
+    },
+    force : true,
+    key : 'customized_key',
+    timeout : 2000
+  });
+
+  $.expireAjaxCache(/album\/\d+\/picture(s)?/);
+
+== How To Run Test ?
+  $ sudo gem install sinatra
+  $ ruby server.rb
+  $ open '127.0.0.1:4567' in browser
+
+
+Copyright (c) 2009  Dual licensed under the MIT and GPL
+  Author : Jinzhu Zhang
+  Github : http://github.com/jinzhu
+  Email  : wosmvp (no-spam) gmail (no-spam) com

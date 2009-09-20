@@ -17,8 +17,8 @@
  *                       $.expireAjaxCache(/regexp/)
  *                       $.expireAjaxCache('string-key')
  *                       $.expireAjaxCache()  // default document.location.hash
- *                           $.setAjaxCacheDefaultKey = 'string' // set default key
- *                           $.setAjaxCacheDefaultKey =  function() {}
+ *                           $.setAjaxCacheDefaultKey('string') // set default key
+ *                           $.setAjaxCacheDefaultKey(function() {})
 */
 
 (function($) {
