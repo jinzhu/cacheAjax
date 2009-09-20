@@ -52,7 +52,7 @@
           if($.cacheAjaxData.defaultKey instanceof Function){
             key = $.cacheAjaxData.defaultKey.call(this).toString()
           }else{
-            key = $.cacheAjaxData.defaultKey.toString()
+            key = $.cacheAjaxData.defaultKey.toString();
           }
           $.cacheAjaxData.data[key] = false;
         }
