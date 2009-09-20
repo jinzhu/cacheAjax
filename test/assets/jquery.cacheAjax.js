@@ -84,6 +84,7 @@
 
         if(result){
           eval(result);
+          if(para.success){ para.success.call(this,result) };
         }else{
           $.ajax($.extend({},opt ,{dataType: 'text'}))
         };
