@@ -1,6 +1,6 @@
 successCacheAjax = function(opt) {
   opt = $.extend({},{
-        url: url("/ajax"),
+        url: url("/script"),
         beforeSend: function(xhr){
           ok(true, "beforeSend");
           xhr.setRequestHeader("Accept", "text/javascript");
@@ -21,8 +21,8 @@ test("jQuery.cacheAjax() - successful cache/invoke", function() {
   expect(6); //beforeSend,2 success,complete,2 ajax call back
   stop();
 
-  successCacheAjax({ url: '/ajax',key: 'cache' });
-  successCacheAjax({ url: '/ajax',key: 'cache' });
+  successCacheAjax({ url: '/script',key: 'cache' });
+  successCacheAjax({ url: '/script',key: 'cache' });
 
   start();
 });
@@ -32,7 +32,7 @@ test("jQuery.cacheAjax() - pass function", function() {
   stop();
 
   successCacheAjax({
-    url: '/ajax',
+    url: '/script',
     key: 'cache_pass_function',
     success: function(e){
         equals('ok(true, "ajax call back")',e,'save ajax response correctly');
@@ -40,7 +40,7 @@ test("jQuery.cacheAjax() - pass function", function() {
     });
 
   successCacheAjax({
-    url: '/ajax',
+    url: '/script',
     key: 'cache_pass_function',
     success: function(e){
         ok(true,'passed function');
@@ -56,13 +56,13 @@ test("jQuery.cacheAjax() - force new request", function() {
   stop();
 
   successCacheAjax({
-      url: '/ajax',
+      url: '/script',
       key: 'force_to_request',
       force: true
     });
 
   successCacheAjax({
-    url: '/ajax',
+    url: '/script',
     key: 'force_to_request',
     force: true
     });

@@ -9,7 +9,7 @@ get '/' do
   erb :index
 end
 
-get '/ajax' do
+get '/script' do
   sleep(params[:wait].to_i) if params[:wait]
   'ok(true, "ajax call back")'
 end

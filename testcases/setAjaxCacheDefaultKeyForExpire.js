@@ -2,7 +2,7 @@ test("jQuery.setAjaxCacheDefaultKey() - set default key string", function() {
   $.setAjaxCacheDefaultKey('string-key');
 
   successCacheAjax({
-      url: '/ajax',
+      url: '/script',
       key: 'string-key'
     });
 
@@ -19,7 +19,7 @@ test("jQuery.setAjaxCacheDefaultKey() - set default key function", function() {
   })
 
   successCacheAjax({
-      url: '/ajax',
+      url: '/script',
       key: 'function-key'
     });
 

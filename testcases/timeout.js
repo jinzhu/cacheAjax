@@ -3,12 +3,12 @@ test("jQuery.cacheAjax() - setTimeout", function() {
   stop();
 
   successCacheAjax({
-      url: '/ajax',
+      url: '/script',
       key: 'timeout',
       timeout : 100,
     });
 
-  window.setTimeout("successCacheAjax({ url: '/ajax', key: 'timeout', timeout : 2000, });start();",150);
+  window.setTimeout("successCacheAjax({ url: '/script', key: 'timeout', timeout : 2000, });start();",150);
 });
 
 test("jQuery.setAjaxCacheTimeout() - global default timeout", function() {
@@ -17,11 +17,11 @@ test("jQuery.setAjaxCacheTimeout() - global default timeout", function() {
 
   $.setAjaxCacheTimeout(100)
   successCacheAjax({
-      url: '/ajax',
+      url: '/script',
       key: 'default_timeout',
     });
 
-  window.setTimeout("successCacheAjax({ url: '/ajax', key: 'default_timeout', timeout : 100 });start();",110);
+  window.setTimeout("successCacheAjax({ url: '/script', key: 'default_timeout', timeout : 100 });start();",110);
 
   $.setAjaxCacheTimeout(false); //reset default timeout
 });

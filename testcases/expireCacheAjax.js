@@ -3,24 +3,24 @@ test("jQuery.expireAjaxCache() - expire cache /regexp/ ", function() {
   stop();
 
   successCacheAjax({
-      url: '/ajax',
+      url: '/script',
       key: 'expire_cache',
     });
 
   successCacheAjax({
-      url: '/ajax',
+      url: '/script',
       key: 'expire_cache_another',
     });
 
   $.expireAjaxCache(/expire/)
 
   successCacheAjax({
-    url: '/ajax',
+    url: '/script',
     key: 'expire_cache',
     });
 
   successCacheAjax({
-    url: '/ajax',
+    url: '/script',
     key: 'expire_cache_another',
     });
 
@@ -32,14 +32,14 @@ test("jQuery.expireAjaxCache() - expire cache string", function() {
   stop();
 
   successCacheAjax({
-      url: '/ajax',
+      url: '/script',
       key: 'string_expire_cache',
     });
 
   $.expireAjaxCache('string_expire_cache')
 
   successCacheAjax({
-    url: '/ajax',
+    url: '/script',
     key: 'string_expire_cache',
     });
 
