@@ -80,6 +80,8 @@
 
         if(result){
           if(opt.dataType == 'script'){ eval(result) };
+          complete = para.complete || jQuery.ajaxSettings.complete ;
+          if(complete){ complete.call(this,result) };
           if(para.success){ para.success.call(this,result) };
         }else{
           // if dataType is 'script',reset to 'text'
