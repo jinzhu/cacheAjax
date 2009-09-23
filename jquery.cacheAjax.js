@@ -73,12 +73,13 @@
 
       if(opt.type == 'GET') {
         // customize cache key
-        var cache_key = opt.key || (opt.url + opt.data); //FIXME cache key -> real url
+        var cache_key = opt.key || (opt.url + opt.data); //FIXME cache key more like real url
 
         // force send ajax request
         result = opt.force ? false : $.cacheAjaxData.get(cache_key);
 
         if(result){
+          // FIXME doesn't care about jQuery Global Event ... ( set global: false? )
           if(opt.dataType == 'script'){ eval(result) };
           complete = para.complete || jQuery.ajaxSettings.complete ;
           if(complete){ complete.call(this,result) };
