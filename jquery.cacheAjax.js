@@ -10,8 +10,8 @@
  *                           url + data                            // default key
  *                       setTimeout
  *                           $.cacheAjax({ timeout : 2000 }) // 2 seconds
- *                           $.setAjaxCacheTimeout(2000)     // 2 seconds, global default
- *                           $.setAjaxCacheTimeout(false)    // never expire
+ *                           $.setCacheTimeout(2000)     // 2 seconds, global default
+ *                           $.setCacheTimeout(false)    // never expire
  *
  *   expireCache  ->
  *                       $.expireCache(/regexp/)
@@ -106,7 +106,7 @@
         $._cacheData.data[key.toString()] = [value,timeout];
       },
 
-    setAjaxCacheTimeout: function(value) {
+    setCacheTimeout: function(value) {
       $._cacheData.Timeout = value;
     },
 
