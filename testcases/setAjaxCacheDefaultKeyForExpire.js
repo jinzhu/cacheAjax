@@ -1,5 +1,5 @@
-test("jQuery.setAjaxCacheDefaultKey() - set default key string", function() {
-  $.setAjaxCacheDefaultKey('string-key');
+test("jQuery.setCacheDefaultKey() - set default key string", function() {
+  $.setCacheDefaultKey('string-key');
 
   successCacheAjax({
       url: '/script',
@@ -13,8 +13,8 @@ test("jQuery.setAjaxCacheDefaultKey() - set default key string", function() {
   ok(!$.cacheAjaxData.get('string-key'),'string-key expired');
 })
 
-test("jQuery.setAjaxCacheDefaultKey() - set default key function", function() {
-  $.setAjaxCacheDefaultKey(function(){
+test("jQuery.setCacheDefaultKey() - set default key function", function() {
+  $.setCacheDefaultKey(function(){
     return 'function-key';
   })
 

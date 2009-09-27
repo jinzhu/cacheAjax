@@ -17,8 +17,8 @@
  *                       $.expireCache(/regexp/)
  *                       $.expireCache('string-key')
  *                       $.expireCache()  // default document.location.hash
- *                           $.setAjaxCacheDefaultKey('string') // set default key
- *                           $.setAjaxCacheDefaultKey(function() {})
+ *                           $.setCacheDefaultKey('string') // set default key
+ *                           $.setCacheDefaultKey(function() {})
 */
 
 (function($) {
@@ -110,7 +110,7 @@
       $._cacheData.Timeout = value;
     },
 
-    setAjaxCacheDefaultKey: function(value) {
+    setCacheDefaultKey: function(value) {
       $._cacheData.defaultKey = value;
     }
   };

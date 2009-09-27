@@ -28,9 +28,9 @@
 
   $.expireCache()
     default expire `document.location.hash`,use the following to reset the default:
-      $.setAjaxCacheDefaultKey('string');
+      $.setCacheDefaultKey('string');
         // use 'string' as default
-      $.setAjaxCacheDefaultKey(function(){});
+      $.setCacheDefaultKey(function(){});
         // use the function's return value as default
 
 === A small sample:
