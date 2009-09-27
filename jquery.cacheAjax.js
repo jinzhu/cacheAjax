@@ -98,13 +98,13 @@
     },
 
     getCache : function(key) {
-      $._cacheData.get(key);
+      return $._cacheData.get(key);
     },
 
     addCache : function(key,value,timeout) {
         timeout = timeout ? ((new Date()).getTime() + timeout) : ($._cacheData.Timeout || false);
         $._cacheData.data[key.toString()] = [value,timeout];
-      },
+    },
 
     setCacheTimeout: function(value) {
       $._cacheData.Timeout = value;

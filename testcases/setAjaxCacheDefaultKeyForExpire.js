@@ -6,11 +6,11 @@ test("jQuery.setCacheDefaultKey() - set default key string", function() {
       key: 'string-key'
     });
 
-  ok($.cacheAjaxData.get('string-key'),'have string-key');
+  ok($.getCache('string-key'),'have string-key');
 
   $.expireCache();
 
-  ok(!$.cacheAjaxData.get('string-key'),'string-key expired');
+  ok(!$.getCache('string-key'),'string-key expired');
 })
 
 test("jQuery.setCacheDefaultKey() - set default key function", function() {
@@ -23,9 +23,9 @@ test("jQuery.setCacheDefaultKey() - set default key function", function() {
       key: 'function-key'
     });
 
-  ok($.cacheAjaxData.get('function-key'),'function-key exist');
+  ok($.getCache('function-key'),'function-key exist');
 
   $.expireCache();
 
-  ok(!$.cacheAjaxData.get('function-key'),'function-key expired');
+  ok(!$.getCache('function-key'),'function-key expired');
 })
