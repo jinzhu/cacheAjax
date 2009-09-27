@@ -1,5 +1,5 @@
 test("jQuery.cacheAjax() - dataType json", function() {
-  expect(5); // beforeSend,3 success,complete
+  expect(6); // beforeSend,3 success,2 complete
   stop();
 
   successCacheAjax({
@@ -23,7 +23,7 @@ test("jQuery.cacheAjax() - dataType json", function() {
 
 // doesn't work with firefox-3.5/linux? works very well with opera/linux,chromium/linux
 test("jQuery.cacheAjax() - dataType xml", function() {
-  expect(4); // beforeSend,2 success,complete
+  expect(5); // beforeSend,2 success,2 complete
   stop();
 
   successCacheAjax({

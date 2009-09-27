@@ -82,6 +82,7 @@
           // FIXME doesn't care about jQuery Global Event ... ( set global: false? )
           if(opt.dataType == 'script'){ eval(result) };
           complete = para.complete || jQuery.ajaxSettings.complete ;
+          console.log(complete)
           if(complete){ complete.call(this,result) };
           if(para.success){ para.success.call(this,result) };
         }else{
