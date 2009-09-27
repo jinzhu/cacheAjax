@@ -19,14 +19,14 @@
           $.setAjaxCacheTimeout(2000)     // 2 seconds
           $.setAjaxCacheTimeout(false)    // never expire
 
-=== $.expireAjaxCache
-  $.expireAjaxCache(/regexp/)
+=== $.expireCache
+  $.expireCache(/regexp/)
     expire all key match /regexp/
 
-  $.expireAjaxCache('string-key')
+  $.expireCache('string-key')
     expire 'string-key'
 
-  $.expireAjaxCache()
+  $.expireCache()
     default expire `document.location.hash`,use the following to reset the default:
       $.setAjaxCacheDefaultKey('string');
         // use 'string' as default
@@ -45,7 +45,7 @@
     timeout : 2000
   });
 
-  $.expireAjaxCache(/album\/\d+\/picture(s)?/);
+  $.expireCache(/album\/\d+\/picture(s)?/);
 
 == How To Run Test ?
   $ sudo gem install sinatra

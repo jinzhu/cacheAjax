@@ -13,10 +13,10 @@
  *                           $.setAjaxCacheTimeout(2000)     // 2 seconds, global default
  *                           $.setAjaxCacheTimeout(false)    // never expire
  *
- *   expireAjaxCache  ->
- *                       $.expireAjaxCache(/regexp/)
- *                       $.expireAjaxCache('string-key')
- *                       $.expireAjaxCache()  // default document.location.hash
+ *   expireCache  ->
+ *                       $.expireCache(/regexp/)
+ *                       $.expireCache('string-key')
+ *                       $.expireCache()  // default document.location.hash
  *                           $.setAjaxCacheDefaultKey('string') // set default key
  *                           $.setAjaxCacheDefaultKey(function() {})
 */

@@ -8,7 +8,7 @@ test("jQuery.setAjaxCacheDefaultKey() - set default key string", function() {
 
   ok($.cacheAjaxData.get('string-key'),'have string-key');
 
-  $.expireAjaxCache();
+  $.expireCache();
 
   ok(!$.cacheAjaxData.get('string-key'),'string-key expired');
 })
@@ -25,7 +25,7 @@ test("jQuery.setAjaxCacheDefaultKey() - set default key function", function() {
 
   ok($.cacheAjaxData.get('function-key'),'function-key exist');
 
-  $.expireAjaxCache();
+  $.expireCache();
 
   ok(!$.cacheAjaxData.get('function-key'),'function-key expired');
 })

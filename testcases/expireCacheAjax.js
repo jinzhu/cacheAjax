@@ -1,4 +1,4 @@
-test("jQuery.expireAjaxCache() - expire cache /regexp/ ", function() {
+test("jQuery.expireCache() - expire cache /regexp/ ", function() {
   expect(16); // 4 beforeSend,4 success,4 complete,4 ajax call back
   stop();
 
@@ -12,7 +12,7 @@ test("jQuery.expireAjaxCache() - expire cache /regexp/ ", function() {
       key: 'expire_cache_another',
     });
 
-  $.expireAjaxCache(/expire/)
+  $.expireCache(/expire/)
 
   successCacheAjax({
     url: '/script',
@@ -27,7 +27,7 @@ test("jQuery.expireAjaxCache() - expire cache /regexp/ ", function() {
   start();
 });
 
-test("jQuery.expireAjaxCache() - expire cache string", function() {
+test("jQuery.expireCache() - expire cache string", function() {
   expect(8); // 2 beforeSend,2 success,2 complete,2 ajax call back
   stop();
 
@@ -36,7 +36,7 @@ test("jQuery.expireAjaxCache() - expire cache string", function() {
       key: 'string_expire_cache',
     });
 
-  $.expireAjaxCache('string_expire_cache')
+  $.expireCache('string_expire_cache')
 
   successCacheAjax({
     url: '/script',
