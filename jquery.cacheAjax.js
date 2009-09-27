@@ -97,6 +97,15 @@
       $._cacheData.del(key);
     },
 
+    getCache : function(key) {
+      $._cacheData.get(key);
+    },
+
+    addCache : function(key,value,timeout) {
+        timeout = timeout ? ((new Date()).getTime() + timeout) : ($._cacheData.Timeout || false);
+        $._cacheData.data[key.toString()] = [value,timeout];
+      },
+
     setAjaxCacheTimeout: function(value) {
       $._cacheData.Timeout = value;
     },
