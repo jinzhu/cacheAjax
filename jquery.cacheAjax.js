@@ -23,38 +23,38 @@
 
 (function($) {
   cacheAjax = {
-    // cacheAjaxData(get,add,del,data)
-    cacheAjaxData   : {
+    // _cacheData(get,add,del,data)
+    _cacheData   : {
       get  : function(key) {
-        r = $.cacheAjaxData.data[key.toString()]; // result
+        r = $._cacheData.data[key.toString()]; // result
         // unexist or expired
         return (!r || (r[1] && (new Date()).getTime() > r[1])) ? false : r[0];
       },
 
       add  : function(key,value,timeout) { // default timeout
-        timeout = timeout ? ((new Date()).getTime() + timeout) : ($.cacheAjaxData.Timeout || false);
-        $.cacheAjaxData.data[key.toString()] = [value,timeout];
+        timeout = timeout ? ((new Date()).getTime() + timeout) : ($._cacheData.Timeout || false);
+        $._cacheData.data[key.toString()] = [value,timeout];
       },
 
       del  : function(key) {
         if(key){
           if(key instanceof RegExp){
             // regexp
-            for (var i in $.cacheAjaxData.data) {
-              if(key.test(i)){ $.cacheAjaxData.data[i] = false; };
+            for (var i in $._cacheData.data) {
+              if(key.test(i)){ $._cacheData.data[i] = false; };
             };
           }else{
             // string
-            $.cacheAjaxData.data[key.toString()] = false;
+            $._cacheData.data[key.toString()] = false;
           };
         }else{
           // default key
-          if($.cacheAjaxData.defaultKey instanceof Function){
-            key = $.cacheAjaxData.defaultKey.call(this).toString()
+          if($._cacheData.defaultKey instanceof Function){
+            key = $._cacheData.defaultKey.call(this).toString()
           }else{
-            key = $.cacheAjaxData.defaultKey.toString();
+            key = $._cacheData.defaultKey.toString();
           }
-          $.cacheAjaxData.data[key] = false;
+          $._cacheData.data[key] = false;
         }
       },
       data : {},
@@ -66,7 +66,7 @@
       opt = $.extend( {type: 'GET',dataType : 'script'} , para);
 
       opt.success = function(e) {
-        $.cacheAjaxData.add(cache_key,e,opt.timeout);
+        $._cacheData.add(cache_key,e,opt.timeout);
         if(opt.dataType == 'script'){ eval(e) };
         if(para.success){ para.success.call(this,e) };
       };
@@ -76,13 +76,12 @@
         var cache_key = opt.key || (opt.url + opt.data); //FIXME cache key more like real url
 
         // force send ajax request
-        result = opt.force ? false : $.cacheAjaxData.get(cache_key);
+        result = opt.force ? false : $._cacheData.get(cache_key);
 
         if(result){
           // FIXME doesn't care about jQuery Global Event ... ( set global: false? )
           if(opt.dataType == 'script'){ eval(result) };
           complete = para.complete || jQuery.ajaxSettings.complete ;
-          console.log(complete)
           if(complete){ complete.call(this,result) };
           if(para.success){ para.success.call(this,result) };
         }else{
@@ -94,16 +93,16 @@
       };
     },
 
-    expireAjaxCache : function(key) {
-      $.cacheAjaxData.del(key);
+    expireCache : function(key) {
+      $._cacheData.del(key);
     },
 
     setAjaxCacheTimeout: function(value) {
-      $.cacheAjaxData.Timeout = value;
+      $._cacheData.Timeout = value;
     },
 
     setAjaxCacheDefaultKey: function(value) {
-      $.cacheAjaxData.defaultKey = value;
+      $._cacheData.defaultKey = value;
     }
   };
 
