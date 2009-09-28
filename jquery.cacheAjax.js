@@ -81,9 +81,9 @@
         if(result){
           // FIXME doesn't care about jQuery Global Event ... ( set global: false? )
           if(opt.dataType == 'script'){ eval(result) };
+          if(para.success){ para.success.call(this,result) };
           complete = para.complete || jQuery.ajaxSettings.complete ;
           if(complete){ complete.call(this,result) };
-          if(para.success){ para.success.call(this,result) };
         }else{
           // if dataType is 'script',reset to 'text'
           $.ajax($.extend({},opt,(opt.dataType == 'script') ? {dataType: 'text'} : {}));
