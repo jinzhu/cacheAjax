@@ -32,7 +32,8 @@
       },
 
       add  : function(key,value,timeout) { // default timeout
-        timeout = timeout ? ((new Date()).getTime() + timeout) : ($._cacheData.Timeout || false);
+        timeout = timeout || $._cacheData.Timeout;
+        timeout = timeout ? ((new Date()).getTime() + timeout) : false;
         $._cacheData.data[key.toString()] = [value,timeout];
       },
 
@@ -102,8 +103,7 @@
     },
 
     addCache : function(key,value,timeout) {
-        timeout = timeout ? ((new Date()).getTime() + timeout) : ($._cacheData.Timeout || false);
-        $._cacheData.data[key.toString()] = [value,timeout];
+      $._cacheData.add(key,value,timeout);
     },
 
     setCacheTimeout: function(value) {
