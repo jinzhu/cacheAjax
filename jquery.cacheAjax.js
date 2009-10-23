@@ -26,7 +26,7 @@
     // _cacheData(get,add,del,data)
     _cacheData   : {
       get  : function(key) {
-        r = $._cacheData.data[key.toString()]; // result
+        var r = $._cacheData.data[key.toString()]; // result
         // unexist or expired
         return (!r || (r[1] && (new Date()).getTime() > r[1])) ? false : r[0];
       },
@@ -42,16 +42,16 @@
           if(key instanceof RegExp){
             // regexp
             for (var i in $._cacheData.data) {
-              if(key.test(i)){ $._cacheData.data[i] = false; };
-            };
+              if(key.test(i)){ $._cacheData.data[i] = false; }
+            }
           }else{
             // string
             $._cacheData.data[key.toString()] = false;
-          };
+          }
         }else{
           // default key
           if($._cacheData.defaultKey instanceof Function){
-            key = $._cacheData.defaultKey.call(this).toString()
+            key = $._cacheData.defaultKey.call(this).toString();
           }else{
             key = $._cacheData.defaultKey.toString();
           }
@@ -64,34 +64,34 @@
     },
 
     cacheAjax       : function(para) {
-      opt = $.extend( {type: 'GET',dataType : 'script'} , para);
+      var opt = $.extend( {type: 'GET',dataType : 'script'} , para);
+
+      // customize cache key
+      var cache_key = opt.key || (opt.url + opt.data); //FIXME cache key more like real url
 
       opt.success = function(e) {
         $._cacheData.add(cache_key,e,opt.timeout);
-        if(opt.dataType == 'script'){ eval(e) };
-        if(para.success){ para.success.call(this,e) };
+        if(opt.dataType == 'script'){ eval(e); }
+        if(para.success){ para.success.call(this,e); }
       };
 
       if(opt.type == 'GET') {
-        // customize cache key
-        var cache_key = opt.key || (opt.url + opt.data); //FIXME cache key more like real url
-
         // force send ajax request
-        result = opt.force ? false : $._cacheData.get(cache_key);
+        var result = opt.force ? false : $._cacheData.get(cache_key);
 
         if(result){
           // FIXME doesn't care about jQuery Global Event ... ( set global: false? )
-          if(opt.dataType == 'script'){ eval(result) };
-          if(para.success){ para.success.call(this,result) };
-          complete = para.complete || jQuery.ajaxSettings.complete ;
-          if(complete){ complete.call(this,result) };
+          if(opt.dataType == 'script'){ eval(result); }
+          if(para.success){ para.success.call(this,result); }
+          var complete = para.complete || jQuery.ajaxSettings.complete ;
+          if(complete){ complete.call(this,result); }
         }else{
           // if dataType is 'script',reset to 'text'
           $.ajax($.extend({},opt,(opt.dataType == 'script') ? {dataType: 'text'} : {}));
-        };
+        }
       }else{
         $.ajax(para);
-      };
+      }
     },
 
     expireCache : function(key) {
