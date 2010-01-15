@@ -2,118 +2,102 @@
  * Copyright (c) 2009 Zhang Jinzhu ( wosmvp@gmail.com )
  * Dual licensed under the MIT and GPL
  *
- *   cacheAjax        -> 
+ *   cacheAjax        -> // can use all $.ajax's setting options.
  *                       force new ajax request
- *                           $.cacheAjax({ force : true }) // force new ajax request 
+ *                           $.cacheAjax({ force : true })         // force a new ajax request 
  *                       cache key
  *                           $.cacheAjax({ key : customized_key }) // customize 
  *                           url + data                            // default key
  *                       setTimeout
- *                           $.cacheAjax({ timeout : 2000 }) // 2 seconds
- *                           $.setCacheTimeout(2000)     // 2 seconds, global default
- *                           $.setCacheTimeout(false)    // never expire
+ *                           $.cacheAjax({ timeout : 2000 }) // expire this ajax's response after 2 seconds
+ *                           $.setCacheTimeout(2000)         // set global timeout, all cached result will be expire after 2 seconds.
+ *                           $.setCacheTimeout(false)        // set global timeout as false, this means never expire.
  *
  *   expireCache  ->
  *                       $.expireCache(/regexp/)
  *                       $.expireCache('string-key')
- *                       $.expireCache()  // default document.location.hash
- *                           $.setCacheDefaultKey('string') // set default key
- *                           $.setCacheDefaultKey(function() {})
+ *                       $.expireCache()  // expire defaultKey,defaultKey is document.location.hash
+ *                         // Set Default Key
+ *                         $.setCacheDefaultKey('string')
+ *                         $.setCacheDefaultKey(function() {})
+ *
+ *   addCache     ->    $.addCache(key,value,timeout);
+ *
+ *   getCache     ->    $.getCache(key)
 */
 
 (function($) {
-  cacheAjax = {
-    // _cacheData(get,add,del,data)
-    _cacheData   : {
-      get  : function(key) {
-        var r = $._cacheData.data[key.toString()]; // result
-        // unexist or expired
-        return (!r || (r[1] && (new Date()).getTime() > r[1])) ? false : r[0];
-      },
+  var cacheAjax = (function() {
+    var defaultKey = document.location.hash, defaultTimeout, data = {};
 
-      add  : function(key,value,timeout) { // default timeout
-        timeout = timeout || $._cacheData.Timeout;
-        timeout = timeout ? ((new Date()).getTime() + timeout) : false;
-        $._cacheData.data[key.toString()] = [value,timeout];
-      },
+    function get(/*String*/ key) {
+      var value = data[ key];
+      return (!value || (value[1] && (new Date()).getTime() > value[1])) ? false : value[0];
+    }
 
-      del  : function(key) {
-        if(key){
-          if(key instanceof RegExp){
-            // regexp
-            for (var i in $._cacheData.data) {
-              if(key.test(i)){ $._cacheData.data[i] = false; }
-            }
-          }else{
-            // string
-            $._cacheData.data[key.toString()] = false;
-          }
-        }else{
-          // default key
-          if($._cacheData.defaultKey instanceof Function){
-            key = $._cacheData.defaultKey.call(this).toString();
-          }else{
-            key = $._cacheData.defaultKey.toString();
-          }
-          $._cacheData.data[key] = false;
+    function add(/*String*/ key,/*String*/ value,/*Number*/ timeout) {
+      timeout   = timeout || defaultTimeout;
+      timeout   = timeout && ((new Date()).getTime() + timeout);
+      data[key] = [value, timeout];
+    }
+
+    function remove(/*String*/ key) {
+      if (key) {
+        if(key instanceof RegExp) {
+          for (var i in data) { if (key.test(i)) { data[i] = false;} }
+        } else {
+          data[key] = false;
         }
-      },
-      data : {},
-      Timeout: false,
-      defaultKey: document.location.hash
-    },
+      } else {
+        // default key
+        if (defaultKey instanceof Function) {
+          key = defaultKey.call(this).toString();
+        } else {
+          key = defaultKey.toString();
+        }
+        data[key] = false;
+      }
+    }
 
-    cacheAjax       : function(para) {
-      var opt = $.extend( {type: 'GET',dataType : 'script'} , para);
+    function ajax(/*Object*/ oldAjaxSetting) {
+      var newAjaxSetting = $.extend( {type: 'GET',dataType : 'script'} , oldAjaxSetting);
 
-      // customize cache key
-      var cache_key = opt.key || (opt.url + opt.data); //FIXME cache key more like real url
+      if (newAjaxSetting.type == 'GET') {
+        // customize/default cache key
+        var cache_key = newAjaxSetting.key || (newAjaxSetting.url + newAjaxSetting.data);
 
-      opt.success = function(e) {
-        $._cacheData.add(cache_key,e,opt.timeout);
-        if(opt.dataType == 'script'){ eval(e); }
-        if(para.success){ para.success.call(this,e); }
-      };
+        newAjaxSetting.success = function(e) {
+          add(/*String*/ cache_key,/*Response*/ e,/*Integer*/ newAjaxSetting.timeout);
+          if (newAjaxSetting.dataType == 'script') { eval(e); }
+          if (oldAjaxSetting.success) { oldAjaxSetting.success.call(this,e); }
+        };
 
-      if(opt.type == 'GET') {
-        // force send ajax request
-        var result = opt.force ? false : $._cacheData.get(cache_key);
+        // force a new ajax request or get cached response.
+        var result = newAjaxSetting.force ? false : get(cache_key);
 
-        if(result){
-          // FIXME doesn't care about jQuery Global Event ... ( set global: false? )
-          if(opt.dataType == 'script'){ eval(result); }
-          if(para.success){ para.success.call(this,result); }
-          var complete = para.complete || jQuery.ajaxSettings.complete ;
+        if (result) {
+          if (newAjaxSetting.dataType == 'script') { eval(result); }
+          if (oldAjaxSetting.success) { oldAjaxSetting.success.call(this,result); }
+          var complete = oldAjaxSetting.complete || jQuery.ajaxSettings.complete;   // FIXME Other jQuery Global Event
           if(complete){ complete.call(this,result); }
         }else{
-          // if dataType is 'script',reset to 'text'
-          $.ajax($.extend({},opt,(opt.dataType == 'script') ? {dataType: 'text'} : {}));
+          // if dataType is 'script',reset it to 'text' to cache the response.
+          $.ajax($.extend({}, newAjaxSetting, (newAjaxSetting.dataType == 'script') ? {dataType: 'text'} : {}));
         }
-      }else{
-        $.ajax(para);
+      } else {
+        $.ajax(oldAjaxSetting);
       }
-    },
-
-    expireCache : function(key) {
-      $._cacheData.del(key);
-    },
-
-    getCache : function(key) {
-      return $._cacheData.get(key);
-    },
-
-    addCache : function(key,value,timeout) {
-      $._cacheData.add(key,value,timeout);
-    },
-
-    setCacheTimeout: function(value) {
-      $._cacheData.Timeout = value;
-    },
-
-    setCacheDefaultKey: function(value) {
-      $._cacheData.defaultKey = value;
     }
-  };
+
+    return {
+      cacheAjax          : ajax,
+      setCacheTimeout    : function(value) { defaultTimeout = value; },
+      setCacheDefaultKey : function(value) { defaultKey     = value; },
+      expireCache        : function(key) { return remove(key); },
+      getCache           : function(key) { return get(key);    },
+      addCache           : function(key,value,timeout) { return add(key,value,timeout); }
+    }
+  })();
 
   $.extend(cacheAjax);
   $.fn.extend(cacheAjax);
