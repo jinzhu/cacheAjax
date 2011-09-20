@@ -64,7 +64,7 @@
 
       if (newAjaxSetting.type == 'GET') {
         // customize/default cache key
-        var cache_key = newAjaxSetting.key || (newAjaxSetting.url + newAjaxSetting.data);
+        var cache_key = newAjaxSetting.key || (newAjaxSetting.url + ((typeof(newAjaxSetting.data) == 'object') ? $.param(newAjaxSetting.data) : newAjaxSetting.data));
 
         newAjaxSetting.success = function(e) {
           add(/*String*/ cache_key,/*Response*/ e,/*Integer*/ newAjaxSetting.timeout);
